@@ -1,0 +1,18 @@
+-- create database --means this is a comment
+
+create database MyFirstDatabase;
+
+-- to use the database
+
+use MyFirstDatabase;
+
+-- creating tables in the database
+
+create table tutorials_tbl(
+	tutorial_id INT NOT NULL,
+    tutorial_title varchar(100) not null,
+    tutorial_author varchar(40) not null,
+    submission_date DATE,
+    primary key ( tutorial_id )
+    );
+
