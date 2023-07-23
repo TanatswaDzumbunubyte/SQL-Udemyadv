@@ -16,3 +16,21 @@ create table tutorials_tbl(
     primary key ( tutorial_id )
     );
 
+-- now to use auto-increment function for the tutorial id
+
+
+create table tutorials_tbl_withAutoID(
+	tutorial_id INT NOT NULL,
+    tutorial_title varchar(100) not null,
+    tutorial_author varchar(40) not null,
+    submission_date DATE,
+    primary key ( tutorial_id )
+    );
+
+
+-- insert into tutorials_tbl_withAutoID ('tutorial_title', 'tutorial_author','submission_date')
+-- values ('MySQL Course','Abbas Mahmood','2022-01-01'); 
+
+INSERT INTO tutorials_tbl_withAutoID (`tutorial_title`, `tutorial_author`, `submission_date`)
+VALUES ('MySQL Course', 'Abbas Mahmood', '2022-01-01');
+
