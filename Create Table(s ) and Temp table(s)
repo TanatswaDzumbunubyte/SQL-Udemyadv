@@ -1,0 +1,114 @@
+use MyFirstDatabase;
+
+-- example
+
+-- This query creates a table named 'tblemployee' to store employee information.
+
+CREATE TABLE `tblemployee` (
+  -- This column will store the unique ID of each employee.
+  `Employee_ID` INT NOT NULL AUTO_INCREMENT,
+
+  -- This column will store the name of the employee. It cannot be NULL.
+  `Employee_Name` VARCHAR(45) NOT NULL,
+
+  -- This column will store the ID of the department to which the employee belongs. It cannot be NULL.
+  `Employee_Department_ID` INT NOT NULL,
+
+  -- This column will store the ID of the grade/rank of the employee. It cannot be NULL and has a default value of 100.
+  `Employee_Grade_ID` INT NOT NULL DEFAULT 100,
+
+  -- This column will store the salary of the employee. It cannot be NULL.
+  `Employee_Salary` INT NOT NULL,
+
+  -- This defines the primary key of the table, which is the 'Employee_ID' column.
+  PRIMARY KEY (`Employee_ID`),
+
+  -- This creates an index on the 'Employee_Department_ID' column for faster lookup operations.
+  INDEX `FK_Department_ID_idx` (`Employee_Department_ID` ASC) VISIBLE
+);
+
+--  CONSTRAINT `FK_Department_ID`
+	-- FOREIGN KEY (`Employee_Department_ID`)
+    -- REFERENCES `MyFirstDatabase`.`department` (`Department_ID`)
+   --  ON DELETE RESTRICT
+    -- ON UPDATE CASCADE);
+    
+    
+    -- INSERTING VALUES IN THE TABLE
+INSERT INTO `tblemployee` (`Employee_ID`, `Employee_Name`, `Employee_Department_ID`, `Employee_Salary`)
+VALUES ('100', 'Abbas', '200', '700.00');
+-- second insert will not work because EMployee_ID is a PK and cannot be duplicate
+INSERT INTO `tblemployee` (`Employee_ID`, `Employee_Name`, `Employee_Department_ID`, `Employee_Salary`)
+VALUES ('100', 'Imraan', '200', '700.00');
+
+INSERT INTO `tblemployee` (`Employee_ID`, `Employee_Name`, `Employee_Department_ID`, `Employee_Salary`)
+VALUES ('101', 'Jamie', '200', '700.00');
+
+    -- --------------------------------------------------------------------------------------------
+
+-- Create the 'tasks' table if it doesn't already exist.
+CREATE TABLE IF NOT EXISTS tasks (
+  -- The 'task_id' column will automatically increment for each new task and serve as the primary key.
+  task_id INT AUTO_INCREMENT PRIMARY KEY,
+
+  -- The 'title' column will store the title of the task and cannot be NULL.
+  title VARCHAR(255) NOT NULL,
+
+  -- The 'start_date' column will store the starting date of the task.
+  start_date DATE,
+
+  -- The 'due_date' column will store the due date of the task.
+  due_date DATE,
+
+  -- The 'status' column will store the status of the task as a TINYINT (usually representing different statuses using numeric values).
+  status TINYINT NOT NULL,
+
+  -- The 'priority' column will store the priority of the task as a TINYINT (usually representing different priorities using numeric values).
+  priority TINYINT NOT NULL,
+
+  -- The 'description' column will store a text description of the task.
+  description TEXT,
+
+  -- The 'created_at' column will store the timestamp when the task was created, with a default value of the current timestamp.
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Create the 'checklists' table if it doesn't already exist.
+CREATE TABLE IF NOT EXISTS checklists (
+  -- The 'todo_id' column will automatically increment for each new checklist item and will be part of the primary key.
+  todo_id INT AUTO_INCREMENT,
+
+  -- The 'task_id' column will store the foreign key to link each checklist item to a specific task in the 'tasks' table.
+  task_id INT,
+
+  -- The 'todo' column will store the description of the checklist item and cannot be NULL.
+  todo VARCHAR(255) NOT NULL,
+
+  -- The 'is_completed' column will store a Boolean value to indicate whether the checklist item is completed or not.
+  is_completed BOOLEAN NOT NULL DEFAULT FALSE,
+
+  -- The primary key is composed of 'todo_id' and 'task_id' to uniquely identify each checklist item.
+  PRIMARY KEY (todo_id, task_id),
+
+  -- The 'task_id' column is a foreign key referencing the 'task_id' column in the 'tasks' table.
+  FOREIGN KEY (task_id)
+    REFERENCES tasks (task_id)
+    ON UPDATE RESTRICT  -- The 'task_id' in 'checklists' cannot be updated if the referenced task_id in 'tasks' changes.
+    ON DELETE CASCADE   -- If a task is deleted from the 'tasks' table, all related checklist items in 'checklists' will be deleted as well.
+);
+-- inserting values 
+INSERT INTO tasks (`task_id`, `title`, `start_date`, `due_date`, `status`, `priority`, `description`, `created_at`)
+VALUES ('1', 'MySQL Course', '2022-01-01', '2022-06-30', '0','3','Learn MySQL', '2022-01-01');
+INSERT INTO tasks ( `title`, `start_date`, `due_date`, `status`, `priority`, `description`, `created_at`)
+VALUES ('MSSQL Course', '2022-01-01', '2022-06-30', '0','3','Learn MSSQL', '2022-01-01');
+INSERT INTO tasks (`title`, `start_date`, `due_date`, `status`, `priority`, `description`)
+VALUES ('AWS Course', '2022-01-01', '2022-06-30', '0','3','Learn AWS');
+
+INSERT INTO checklists (`todo_id`, `task_id`, `todo`, `is_completed`)
+VALUES (1, 1, 'Have to spend 1 hour daily', 0);
+
+INSERT INTO checklists (`todo_id`, `task_id`, `todo`, `is_completed`)
+VALUES (1, 2, 'Have to spend 1 hour daily', 0);
+
+INSERT INTO checklists (`todo_id`, `task_id`, `todo`, `is_completed`)
+VALUES (1, 3, 'Have to spend 1 hour daily', 0);
