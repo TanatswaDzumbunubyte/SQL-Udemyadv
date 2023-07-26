@@ -27,7 +27,15 @@ create table tutorials_tbl_withAutoID(
     primary key ( tutorial_id )
     );
 
+use MyFirstDatabase;
 
+-- insert into tutorials_tbl_withAutoID ('tutorial_title', 'tutorial_author','submission_date')
+-- values ('MySQL Course','Abbas Mahmood','2022-01-01'); 
+
+INSERT INTO tutorials_tbl_withAutoID (`tutorial_title`, `tutorial_author`, `submission_date`)
+VALUES ('MySQL Course', 'Abbas Mahmood', '2022-01-01');
+
+-- drop database MyFirstDatabase;
 -- insert into tutorials_tbl_withAutoID ('tutorial_title', 'tutorial_author','submission_date')
 -- values ('MySQL Course','Abbas Mahmood','2022-01-01'); 
 
