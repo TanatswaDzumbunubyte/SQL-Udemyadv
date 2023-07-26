@@ -1,0 +1,21 @@
+-- Switch to the 'sakila' database
+USE sakila;
+
+-- Select all columns from the 'actor_info' table in the 'sakila' database
+select * from sakila.actor_info;
+
+-- This query will result in an error because 'actor_info' and 'customer_list' are not valid column names.
+-- It should be written like this:
+-- select actor_info, customer_list from sakila.actor_info;
+
+-- Count the total number of rows in the 'actor' table in the 'sakila' database
+select count(*) from actor;
+
+-- Select the 'first_name' column from the 'actor' table in the 'sakila' database
+select first_name from actor;
+
+-- Select the 'first_name' and 'last_update' columns from the 'actor' table in the 'sakila' database
+select first_name, last_update from actor;
+
+-- Select the 'last_name' and 'last_update' columns from the 'actor' table in the 'sakila' database
+select last_name, last_update from actor;
