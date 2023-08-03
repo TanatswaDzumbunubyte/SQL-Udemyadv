@@ -1,0 +1,83 @@
+-- Switch to the 'sakila' database
+USE sakila;
+
+-- Select all columns from the 'film' table
+select * from film;
+
+-- Select all columns from the 'film' table where the rating is 'G'
+select * from film where rating = 'G';
+
+-- Select all columns from the 'film' table where the rating is 'g' (Note: SQL queries are case-insensitive, so 'G' and 'g' are the same)
+select * from film where rating = 'g';
+
+-- Count the number of rows in the 'film' table where the rating is 'g'
+select count(*) from film where rating = 'g';
+
+-- Another way to count the number of rows in the 'film' table where the rating is 'g' using count(1) (it counts the occurrences of non-null values in the specified column)
+select count(1) from film where rating = 'g';
+
+-- Count the total number of rows in the 'film' table using the film_id column
+select count(film_id) from film;
+
+-- Count the number of rows in the 'film' table where the rating is 'g' using the film_id column (same as the previous query)
+select count(film_id) from film where rating = 'g';
+
+-- Select all columns from the 'film' table where the rating is 'pg' and the rental_rate is greater than 2.99
+select * from film where rating = 'pg' and rental_rate > 2.99;
+
+-- Select all columns from the 'film' table where the rating is 'g' or the rental_rate is greater than 2.99
+select * from film where rating = 'g' or rental_rate > 2.99;
+
+-- Select all columns from the 'film' table where the rating is 'g' or the rental_rate is equal to 2.99, ordered by length in descending order
+select * from film where rating = 'g' or rental_rate = 2.99 order by length desc;
+
+-- Select the title, rating, rental_rate, last_update, and length columns from the 'film' table where the rating is 'g' and the rental_rate is greater than 2.99, ordered by length in descending order
+select title, rating, rental_rate, rating, last_update, length from film where rating = 'g' and rental_rate > 2.99 order by length desc;
+
+-- Select all columns from the 'rental' table
+select * from rental;
+
+-- Select all columns from the 'rental' table where the return_date is later than '2005-05-26 22:04:30'
+select * from rental where return_date > '2005-05-26 22:04:30';
+
+-- Select all columns from the 'rental' table where the return_date is earlier than '2005-05-26 22:04:30'
+select * from rental where return_date < '2005-05-26 22:04:30';
+
+-- Select all columns from the 'rental' table where the return_date is between '2005-05-26 22:04:30' and '2005-05-30 05:44:27', ordered by return_date in descending order
+select * from rental where return_date between '2005-05-26 22:04:30' and '2005-05-30 05:44:27' order by return_date desc;
+
+-- Select all columns from the 'rental' table where the customer_id is either 130, 459, 269, or 575
+select * from rental where customer_id in (130,459,269,575);
+
+-- Select all columns from the 'rental' table where the customer_id is 130
+select * from rental where customer_id = 130;
+
+-- Select the title, rating, rental_rate, last_update columns from the 'film' table where the rating is not 'g'
+select title, rating, rental_rate, rating, last_update from film where rating <> 'g';
+
+-- Select the title, rating, rental_rate, last_update columns from the 'film' table where the rating is not 'g' (alternate way using !=)
+select title, rating, rental_rate, rating, last_update from film where rating != 'g';
+
+-- Select all columns from the 'film' table
+select * from film;
+
+-- Select the rental_rate column as CurrentRate and the rental_rate column multiplied by 10 as NewRentalRate from the 'film' table
+select rental_rate as CurrentRate, rental_rate * 10 as NewRentalRate from film;
+
+-- Select the rental_rate column as CurrentRate and the rental_rate column multiplied by 10 as NewRentalRate from the 'film' table (same as the previous query)
+select rental_rate as CurrentRate, rental_rate * 10 as NewRentalRate from film;
+
+-- Select distinct rental_rate values from the 'film' table, ordered by rental_rate in descending order
+select distinct(rental_rate) FROM film order by rental_rate desc;
+
+-- Count the number of movies for each rating category (grouped by rating)
+select count(1) as NoOfMovies , rating from film group by rating;
+
+-- Count the number of movies for each rating category (grouped by rating)
+select count(*) as NoOfMovies , rating from film group by rating;
+
+-- Count the number of movies for each rating category (grouped by rating) where the rating is not 'pg' and only display the results where the count is greater than 200
+select count(1) as NoOfMovies , rating from film where rating <> 'pg' group by rating;
+
+-- Count the number of movies for each rating category (grouped by rating) where the rating is not 'pg' and only display the results where the count is greater than 200
+select count(1) as NoOfMovies , rating from film where rating <> 'pg' group by rating having count(1) > 200;
