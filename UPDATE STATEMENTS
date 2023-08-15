@@ -1,0 +1,63 @@
+
+-- Select all columns from the 'customer' table where customer_id is 30
+SELECT * FROM customer WHERE customer_id = 30;
+
+-- Update the email for the customer with customer_id 30
+UPDATE customer SET email = 'MELISSA.KING.updated@sakilacustomer.org' WHERE customer_id = 30;
+
+-- Update the email again for the customer with customer_id 30
+UPDATE customer SET email = 'MELISSA.KING@sakilacustomer.org' WHERE customer_id = 30;
+
+-- Update the first_name and email for the customer with customer_id 30
+UPDATE customer SET first_name = 'Abbas', email = 'MELISSA.KING.updated@sakilacustomer.org' WHERE customer_id = 30;
+
+-- Update the email for the customer with customer_id 30, replacing domain
+UPDATE customer SET email = REPLACE(email, '@sakilacustomer.org', '@mysqltutorial.org') WHERE customer_id = 30;
+
+-- Select all columns from the 'userprofile' table where apid is 1
+SELECT * FROM sakila.userprofile WHERE apid = 1;
+
+-- Update the email for the customer with customer_id 30 using a subquery to get email from userprofile
+UPDATE customer SET email = (SELECT email FROM userprofile WHERE apid = 1) WHERE customer_id = 30;
+
+-- Create a table named 'merits' with columns performance and percentage
+CREATE TABLE merits (
+    performance INT(11) NOT NULL,
+    percentage FLOAT NOT NULL,
+    PRIMARY KEY (performance)
+);
+
+-- Create a table named 'employees' with columns emp_id, emp_name, performance, salary
+CREATE TABLE employees (
+    emp_id INT(11) NOT NULL AUTO_INCREMENT,
+    emp_name VARCHAR(255) NOT NULL,
+    performance INT(11) DEFAULT NULL,
+    salary FLOAT DEFAULT NULL,
+    PRIMARY KEY (emp_id),
+    CONSTRAINT fk_performance FOREIGN KEY (performance)
+        REFERENCES merits (performance)
+);
+
+-- Insert data into the 'merits' table
+INSERT INTO merits(performance, percentage)
+VALUES (1, 0),
+      (2, 0.01),
+      (3, 0.03),
+      (4, 0.05),
+      (5, 0.08);
+
+-- Insert data into the 'employees' table
+INSERT INTO employees(emp_name, performance, salary)      
+VALUES ('Mary Doe', 1, 50000),
+      ('Cindy Smith', 3, 65000),
+      ('Sue Greenspan', 4, 75000),
+      ('Grace Dell', 5, 125000),
+      ('Nancy Johnson', 3, 85000),
+      ('John Doe', 2, 45000),
+      ('Lily Bush', 3, 55000);
+
+-- Update the 'salary' column in the 'employees' table using a JOIN with the 'merits' table
+UPDATE employees
+        INNER JOIN merits ON employees.performance = merits.performance 
+SET 
+    salary = salary + salary * percentage;
