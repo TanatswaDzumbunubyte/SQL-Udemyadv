@@ -1,0 +1,21 @@
+-- Create a new table 'customer_new' by copying all data from the 'customer' table
+CREATE TABLE customer_new AS
+SELECT * FROM customer;
+
+-- Select all rows from the 'customer_new' table where first_name is 'mary'
+SELECT * FROM customer_new WHERE first_name = 'mary';
+
+-- Delete rows from the 'customer_new' table where first_name is 'patricia'
+DELETE FROM customer_new WHERE first_name = 'patricia';
+
+-- Delete the first 10 rows from the 'customer_new' table in an unspecified order
+DELETE FROM customer_new ORDER BY first_name LIMIT 10;
+
+-- Select all rows from the 'customer_new' table, ordering them by first_name
+SELECT * FROM customer_new ORDER BY first_name;
+
+-- Select all rows from the 'employees' table
+SELECT * FROM employees;
+
+-- Delete rows from the 'users' table where auid matches the auid from userprofile where firstname is 'jack'
+DELETE FROM users WHERE auid = (SELECT auid FROM userprofile WHERE firstname = 'jack');
