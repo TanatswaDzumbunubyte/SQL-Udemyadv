@@ -1,0 +1,57 @@
+-- Create a table named 'tasks' if it doesn't already exist
+CREATE TABLE IF NOT EXISTS tasks (
+    task_id INT AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE,
+    due_date DATE,
+    priority TINYINT NOT NULL DEFAULT 3,
+    description TEXT,
+    PRIMARY KEY (task_id)
+);
+
+-- Insert a task into the 'tasks' table with specific values for title and priority
+INSERT INTO tasks (title, priority)
+VALUES ('Learn MySQL INSERT Statement', 1);
+
+-- Select all rows from the 'tasks' table
+SELECT * FROM tasks;
+
+-- Insert a task into the 'tasks' table with the 'DEFAULT' keyword for priority
+INSERT INTO tasks (title, priority)
+VALUES ('Understanding DEFAULT keyword in INSERT statement', DEFAULT);
+
+-- Insert a task into the 'tasks' table with specified values for title, start_date, and due_date
+INSERT INTO tasks (title, start_date, due_date)
+VALUES ('Insert date into table', '2018-01-09', '2018-09-15');
+
+-- Insert a task into the 'tasks' table with the current date for start_date and due_date
+INSERT INTO tasks (title, start_date, due_date)
+VALUES ('Use current date for the task', CURRENT_DATE(), CURRENT_DATE());
+
+-- Insert multiple tasks into the 'tasks' table using a single INSERT statement
+INSERT INTO tasks (title, priority)
+VALUES
+	('My first task', 1),
+	('It is the second task', 2),
+	('This is the third task of the week', 3);
+
+-- Create a table named 'duplicatetasks' if it doesn't already exist, similar to 'tasks'
+CREATE TABLE IF NOT EXISTS duplicatetasks (
+    task_id INT,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE,
+    due_date DATE,
+    priority TINYINT NOT NULL DEFAULT 3,
+    description TEXT,
+    PRIMARY KEY (task_id)
+);
+
+-- Select all rows from the 'duplicatetasksnew' table (Note: 'duplicatetasksnew' table does not exist)
+SELECT * FROM duplicatetasksnew;
+
+-- Insert data from the 'tasks' table into the 'duplicatetasks' table
+INSERT INTO duplicatetasks (task_id, title, start_date, due_date, priority, description)
+SELECT task_id, title, start_date, due_date, priority, description FROM tasks;
+
+-- Create a new table 'duplicatetasksnew' based on the structure and data of the 'tasks' table
+CREATE TABLE duplicatetasksnew AS SELECT * FROM tasks;
