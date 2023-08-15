@@ -1,0 +1,86 @@
+-- Create a table named 'users'
+CREATE TABLE `users` (
+    `auid` INT(10) UNSIGNED NOT NULL,
+    `username` VARCHAR(100) NOT NULL,
+    `password` VARCHAR(150) NOT NULL,
+    `createdate` DATETIME NOT NULL,
+    `isActive` TINYINT(1) NOT NULL
+);
+
+-- Create a table named 'userprofile'
+CREATE TABLE `userprofile` (
+    `apid` INT(10) UNSIGNED NOT NULL,
+    `auid` INT(10) UNSIGNED NOT NULL,
+    `firstname` VARCHAR(50) NOT NULL,
+    `lastname` VARCHAR(50) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    `phone` VARCHAR(45) NOT NULL
+);
+
+-- Insert data into the 'users' table
+INSERT INTO users (auid, username, password, createdate, isActive)
+VALUES (1, 'admin', 'pswrd123', CURDATE(), 1);
+
+-- Insert data into the 'userprofile' table
+INSERT INTO userprofile (apid, auid, firstname, lastname, email, phone)
+VALUES (1, 1, 'Jack', 'Wolf', 'bettestroom@gmail.com', '600075764216');
+
+-- More inserts into the 'users' and 'userprofile' tables
+INSERT INTO users (auid, username, password, createdate, isActive)
+VALUES (2, 'admin1', 'pass506', CURDATE(), 1);
+INSERT INTO userprofile (apid, auid, firstname, lastname, email, phone)
+VALUES (2, 3, 'Tom', 'Collins', 'tnkc@outlook.com', '878511311054');
+-- ...
+
+-- Add a primary key constraint to the 'userprofile' table
+ALTER TABLE `sakila`.`userprofile`
+ADD PRIMARY KEY (`apid`);
+
+-- Retrieve data from 'users' and 'userprofile' tables using INNER JOIN
+SELECT
+    t1.auid,
+    t2.auid,
+    t1.username,
+    t1.password,
+    t1.createdate,
+    t1.isActive,
+    t2.firstname,
+    t2.lastname,
+    t2.email,
+    t2.phone
+FROM users AS t1
+INNER JOIN userprofile AS t2 ON t1.auid = t2.auid;
+
+-- Retrieve data from 'users' and 'userprofile' tables using LEFT JOIN
+SELECT
+    t1.auid,
+    t1.username,
+    t1.password,
+    t1.createdate,
+    t1.isActive,
+    t2.firstname,
+    t2.lastname,
+    t2.email,
+    t2.phone
+FROM users AS t1
+LEFT OUTER JOIN userprofile AS t2 ON t1.auid = t2.auid;
+
+-- Retrieve data from 'users' and 'userprofile' tables using RIGHT JOIN
+SELECT
+    t1.auid,
+    t1.username,
+    t1.password,
+    t1.createdate,
+    t1.isActive,
+    t2.firstname,
+    t2.lastname,
+    t2.email,
+    t2.phone
+FROM users AS t1
+RIGHT OUTER JOIN userprofile AS t2 ON t1.auid = t2.auid;
+
+-- Retrieve data from 'users' and 'userprofile' tables using CROSS JOIN
+SELECT
+    *
+FROM users AS t1
+CROSS JOIN userprofile AS t2;
