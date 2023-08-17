@@ -1,0 +1,63 @@
+-- Retrieve all records from the 'customer' table
+SELECT * FROM customer;
+
+-- Change delimiter for creating stored procedures
+DELIMITER $$
+
+-- Create a stored procedure 'GetAllCustomers' to fetch all customers
+CREATE PROCEDURE GetAllCustomers()
+BEGIN
+    SELECT * FROM customer;
+END $$
+
+-- Reset delimiter to default
+DELIMITER ;
+
+-- Call the 'GetAllCustomers' stored procedure
+CALL GetAllCustomers();
+
+-- Change delimiter for creating the next stored procedure
+DELIMITER $$
+
+-- Create a stored procedure 'GetUserByName' to fetch customer by first name
+CREATE PROCEDURE GetUserByName(
+    IN firstname VARCHAR(255)
+)
+BEGIN
+    SELECT *
+    FROM customer
+    WHERE first_name = firstname;
+END $$
+
+-- Reset delimiter to default
+DELIMITER ;
+
+-- Call the 'GetUserByName' stored procedure with a parameter
+CALL GetUserByName('Mike');
+
+-- Change delimiter for creating the next stored procedure
+DELIMITER $$
+
+-- Create a stored procedure 'GetOrderSumByCustomerID' to calculate total payment amount by customer ID
+CREATE PROCEDURE GetOrderSumByCustomerID (
+    IN customerid INT(25),
+    OUT total INT
+)
+BEGIN
+    SELECT SUM(amount)
+    INTO total
+    FROM payment
+    WHERE customer_id = customerid;
+END $$
+
+-- Reset delimiter to default
+DELIMITER ;
+
+-- Call the 'GetOrderSumByCustomerID' stored procedure with an OUT parameter
+CALL GetOrderSumByCustomerID(200);
+-- Alternatively, call the procedure with an OUT parameter and capture the result
+CALL GetOrderSumByCustomerID(200, @total);
+-- Display the result stored in the @total variable
+SELECT @total AS TotalRentPaid;
+
+-- End of SQL script
