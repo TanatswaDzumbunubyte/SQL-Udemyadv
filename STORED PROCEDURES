@@ -60,4 +60,43 @@ CALL GetOrderSumByCustomerID(200, @total);
 -- Display the result stored in the @total variable
 SELECT @total AS TotalRentPaid;
 
+-- Change delimiter to $$ for creating stored procedures
+DELIMITER $$
+
+-- Create a stored procedure named 'SetCounter'
+-- This procedure takes an INOUT parameter 'counter' (an integer) and an IN parameter 'inc' (an integer)
+CREATE PROCEDURE SetCounter(
+    INOUT counter INT,
+    IN inc INT
+)
+BEGIN
+    -- Modify the 'counter' value by adding the 'inc' value
+    SET counter = counter + inc;
+END $$
+
+-- Reset delimiter to the default semicolon
+DELIMITER ;
+
+-- Set the initial value of the user-defined variable '@counter' to 1
+SET @counter = 1;
+
+-- Call the 'SetCounter' stored procedure with INOUT parameter and IN parameter
+-- This will increment '@counter' by 1
+CALL SetCounter(@Counter, 1); -- After this, '@counter' becomes 2
+
+-- Display the value of the user-defined variable '@counter'
+SELECT @counter; -- Output: 2
+
+-- Call the 'SetCounter' stored procedure with INOUT parameter and IN parameter
+-- This will increment '@counter' by 1 again
+CALL SetCounter(@Counter, 1); -- After this, '@counter' becomes 3
+
+-- Call the 'SetCounter' stored procedure with INOUT parameter and IN parameter
+-- This will increment '@counter' by 5
+CALL SetCounter(@Counter, 5); -- After this, '@counter' becomes 8
+
+-- Display the final value of the user-defined variable '@counter'
+SELECT @counter; -- Output: 8
+
 -- End of SQL script
+
