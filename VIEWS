@@ -1,0 +1,2 @@
+create or replace view `Movies_Rated_R` AS
+select * from sakila.film where rating = 'R';
