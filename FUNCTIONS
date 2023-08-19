@@ -1,0 +1,59 @@
+Certainly! Here's your SQL code with detailed comments explaining each section:
+
+```sql
+-- Create a temporary table 'customerStatus' to store the count of rentals per customer
+-- and their customer ID
+CREATE TEMPORARY TABLE customerStatus 
+SELECT 
+    count(*) as NoOfRentals, customer_id
+FROM
+    rental
+GROUP BY 
+    customer_id;
+    
+-- Display the data in the 'customerStatus' temporary table
+SELECT * FROM customerStatus;
+
+-- Create a function named 'CustomerLevel' to determine the customer level based on the number of rentals
+-- The function takes a DECIMAL parameter 'NoOfRentals' and returns a VARCHAR result
+DELIMITER $$
+
+CREATE FUNCTION CustomerLevel(
+    NoOfRentals DECIMAL(10)
+) 
+RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+    -- Declare a variable 'customerLevel' to store the calculated customer level
+    DECLARE customerLevel VARCHAR(20);
+
+    -- Determine the customer level based on the number of rentals
+    IF NoOfRentals > 30 THEN
+        SET customerLevel = 'PLATINUM';
+    ELSEIF (NoOfRentals >= 20 AND NoOfRentals <= 30) THEN
+        SET customerLevel = 'GOLD';
+    ELSEIF NoOfRentals < 20 THEN
+        SET customerLevel = 'SILVER';
+    END IF;
+    
+    -- Return the calculated customer level
+    RETURN (customerLevel);
+END$$
+DELIMITER ;
+
+-- Calculate customer levels based on the data in the 'customerStatus' temporary table
+-- The result includes the customer ID and their calculated level
+SELECT 
+    customer_id, 
+    CustomerLevel(NoOfRentals)
+FROM
+    customerStatus;
+    
+-- Display the data in the 'rental' table
+-- Columns: NoOfRentals, customer_id
+SELECT * FROM rental;
+
+-- End of SQL script
+```
+
+This code defines a temporary table, a function to determine customer levels, and performs queries to calculate and display customer levels based on the rental count. The comments provide explanations for each step in the process.
