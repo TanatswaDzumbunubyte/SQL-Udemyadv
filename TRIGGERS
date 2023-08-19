@@ -1,0 +1,93 @@
+-- Create a table 'customer_audit' to track customer changes
+CREATE TABLE customer_audit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customerNumber INT NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    changedate DATETIME DEFAULT NULL,
+    action VARCHAR(50) DEFAULT NULL
+);
+
+-- Display the data in the 'customer_audit' table
+SELECT * FROM customer_audit;
+
+-- Create a trigger 'before_customer_update' to log updates in the 'customer_audit' table
+-- This trigger fires before an update on the 'customer' table
+DELIMITER $$
+CREATE TRIGGER before_customer_update
+    BEFORE UPDATE ON customer
+    FOR EACH ROW
+    INSERT INTO customer_audit
+    SET action = 'update',
+        customerNumber = OLD.customer_id,
+        lastname = OLD.last_name, 
+        changedate = NOW();
+$$
+DELIMITER ;
+
+-- Show existing triggers
+SHOW TRIGGERS;
+
+-- Select customers with last name 'Jones' and 'Abbas'
+SELECT * FROM customer WHERE last_name = 'Jones';
+SELECT * FROM customer WHERE last_name = 'Abbas';
+
+-- Update customers with last name 'Jones' to 'Abbas'
+UPDATE customer SET last_name = "Abbas" WHERE last_name = "Jones";
+
+-- Display the data in the 'customer_audit' table
+SELECT * FROM customer_audit;
+
+-- Drop 'Salaries' table if it exists and create a new one
+DROP TABLE IF EXISTS Salaries;
+CREATE TABLE Salaries (
+    employeeNumber INT PRIMARY KEY, 
+    validFrom DATE NOT NULL,
+    amount DECIMAL(12, 2) NOT NULL DEFAULT 0
+);
+
+-- Insert data into the 'Salaries' table
+INSERT INTO Salaries (employeeNumber, validFrom, amount)
+VALUES
+    (1002, '2000-01-01', 50000),
+    (1056, '2000-01-01', 60000),
+    (1076, '2000-01-01', 70000);
+
+-- Drop 'SalaryArchives' table if it exists and create a new one
+DROP TABLE IF EXISTS SalaryArchives;
+CREATE TABLE SalaryArchives (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeNumber INT,
+    validFrom DATE NOT NULL,
+    amount DECIMAL(12, 2) NOT NULL DEFAULT 0,
+    deletedAt TIMESTAMP DEFAULT NOW()
+);
+
+-- Change delimiter for creating triggers
+DELIMITER $$
+    
+-- Create a trigger 'before_salaries_delete' to archive deleted records
+-- This trigger fires before a delete on the 'Salaries' table
+CREATE TRIGGER before_salaries_delete
+    BEFORE DELETE ON Salaries FOR EACH ROW
+    BEGIN 
+        INSERT INTO SalaryArchives (employeeNumber, validFrom, amount)
+        VALUES (OLD.employeeNumber, OLD.validFrom, OLD.amount);
+    END$$
+    
+-- Reset delimiter to default
+DELIMITER ;
+
+-- Display the data in the 'Salaries' table
+SELECT * FROM Salaries;
+
+-- Delete a record from the 'Salaries' table
+DELETE FROM Salaries
+WHERE employeeNumber = 1002;
+
+-- Delete all records from the 'Salaries' table
+DELETE FROM Salaries;
+
+-- Display the data in the 'SalaryArchives' table
+SELECT * FROM SalaryArchives;
+
+-- End of SQL script
